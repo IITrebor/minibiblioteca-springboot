@@ -2,18 +2,27 @@ package com.trebor.minibiblioteca.controllers;
 
 
 import com.trebor.minibiblioteca.entities.Autor;
+import com.trebor.minibiblioteca.reports.AutorExporterPDF;
+import com.trebor.minibiblioteca.repositories.AutorRepository;
 import com.trebor.minibiblioteca.services.AutorService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 @Controller
 @RequestMapping("/autores")
 public class AutorController {
+
+    @Autowired
+    private AutorRepository autorRepository;
 
     @Autowired
     private AutorService autorService;
@@ -63,8 +72,19 @@ public class AutorController {
 
     }
 
+    @GetMapping("/export/pdf")
+    public void generarReportePdf(HttpServletResponse response)throws Exception{
+        response.setContentType("application/pdf");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateTime = dateFormat.format(new Date());
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=autores" + currentDateTime + ".pdf";
+        response.setHeader(headerKey,headerValue);
+        List<Autor> autores =autorRepository.findAll();
 
-
+        AutorExporterPDF exporterPDF= new AutorExporterPDF(autores);
+        exporterPDF.export(response);
+    }
 
 
 }
