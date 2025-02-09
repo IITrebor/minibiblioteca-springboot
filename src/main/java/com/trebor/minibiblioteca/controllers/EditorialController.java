@@ -2,7 +2,10 @@ package com.trebor.minibiblioteca.controllers;
 
 import com.trebor.minibiblioteca.entities.Categoria;
 import com.trebor.minibiblioteca.entities.Editorial;
+import com.trebor.minibiblioteca.entities.Libro;
+import com.trebor.minibiblioteca.reports.EditorialExporterExcel;
 import com.trebor.minibiblioteca.reports.EditorialExpoterPDF;
+import com.trebor.minibiblioteca.reports.LibroExporterExcel;
 import com.trebor.minibiblioteca.repositories.EditorialRepository;
 import com.trebor.minibiblioteca.services.EditorialService;
 import com.trebor.minibiblioteca.services.LibroService;
@@ -12,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -110,4 +114,23 @@ public class EditorialController {
         EditorialExpoterPDF exporterPDF = new EditorialExpoterPDF(editoriales);
         exporterPDF.export(response);
     }
+
+    @GetMapping("/export/excel")
+    public void generarReporteExcel(HttpServletResponse response) throws IOException {
+        response.setContentType("application/octet-stream");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateTime = dateFormat.format(new Date());
+
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=editoriales" + currentDateTime + ".xlsx";
+        response.setHeader(headerKey,headerValue);
+
+        List<Editorial> editoriales = editorialRepository.findAll();
+
+        EditorialExporterExcel exporterExcel = new EditorialExporterExcel(editoriales);
+        exporterExcel.export(response);
+    }
+
+
+
 }
