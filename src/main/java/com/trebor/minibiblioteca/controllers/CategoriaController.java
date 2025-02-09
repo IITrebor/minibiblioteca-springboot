@@ -1,8 +1,11 @@
 package com.trebor.minibiblioteca.controllers;
 
+import com.trebor.minibiblioteca.entities.Autor;
 import com.trebor.minibiblioteca.entities.Categoria;
 import com.trebor.minibiblioteca.entities.Libro;
+import com.trebor.minibiblioteca.reports.AutorExporterExcel;
 import com.trebor.minibiblioteca.reports.AutorExporterPDF;
+import com.trebor.minibiblioteca.reports.CategoriaExporterExcel;
 import com.trebor.minibiblioteca.reports.CategoriaExporterPDF;
 import com.trebor.minibiblioteca.repositories.CategoriaRepository;
 import com.trebor.minibiblioteca.services.CategoriaService;
@@ -13,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -94,7 +98,21 @@ public class CategoriaController {
 
     }
 
+    @GetMapping("/export/excel")
+    public void generarReporteExcel(HttpServletResponse response) throws IOException {
+        response.setContentType("application/octet-stream");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateTime = dateFormat.format(new Date());
 
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=categorias" + currentDateTime + ".xlsx";
+        response.setHeader(headerKey,headerValue);
+
+        List<Categoria> categorias =categoriaRepository.findAll();
+
+        CategoriaExporterExcel exporterExcel = new CategoriaExporterExcel(categorias);
+        exporterExcel.export(response);
+    }
 
 
 
