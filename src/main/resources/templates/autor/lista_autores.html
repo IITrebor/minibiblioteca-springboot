@@ -13,10 +13,11 @@
 <div class="container mt-5">
     <div class="row mb-3">
         <div class="col-md-12 d-flex justify-content-start">
-            <a th:href="@{/autores/export/pdf}" class="btn btn-outline-success" >
+            <a th:href="@{/autores/export/pdf}" class="btn btn-outline-success me-3" >
                 <i class="bi bi-filetype-pdf"></i> Generar PDF
             </a>
-<!--            <a th:href="@{/export/excel}" class="btn btn-success">Generar excel</a>-->
+            <a th:href="@{/autores/export/excel}" class="btn btn-outline-success">
+                <i class="bi bi-file-earmark-excel"></i> Generar excel</a>
         </div>
     </div>
     <h2>Listado de Autores  <i class="bi bi-pen"></i> </h2>
@@ -33,8 +34,8 @@
             <td th:text="${autor.id}"></td>
             <td th:text="${autor.nombre}"></td>
             <td>
-                <a th:href="@{/autores/editar/{id}(id=${autor.id})}" class="btn btn-outline-primary">Editar</a>
-                <a th:href="@{/autores/eliminar/{id}(id=${autor.id})}" class="btn btn-outline-danger">Eliminar</a>
+                <a th:href="@{/autores/editar/{id}(id=${autor.id})}" class="btn btn-outline-primary ms-3" ><i class="bi bi-pencil-square"></i></a>
+                <a th:href="@{/autores/eliminar/{id}(id=${autor.id})}" class="btn btn-outline-danger ms-3"><i class="bi bi-trash-fill"></i></a>
             </td>
         </tr>
         </tbody>

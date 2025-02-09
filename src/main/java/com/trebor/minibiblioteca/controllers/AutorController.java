@@ -2,6 +2,7 @@ package com.trebor.minibiblioteca.controllers;
 
 
 import com.trebor.minibiblioteca.entities.Autor;
+import com.trebor.minibiblioteca.reports.AutorExporterExcel;
 import com.trebor.minibiblioteca.reports.AutorExporterPDF;
 import com.trebor.minibiblioteca.repositories.AutorRepository;
 import com.trebor.minibiblioteca.services.AutorService;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -86,5 +88,19 @@ public class AutorController {
         exporterPDF.export(response);
     }
 
+    @GetMapping("/export/excel")
+    public void generarReporteExcel(HttpServletResponse response) throws IOException {
+        response.setContentType("application/octet-stream");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateTime = dateFormat.format(new Date());
 
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=autores" + currentDateTime + ".xlsx";
+        response.setHeader(headerKey,headerValue);
+
+        List<Autor> autores =autorRepository.findAll();
+
+        AutorExporterExcel exporterExcel = new AutorExporterExcel(autores);
+        exporterExcel.export(response);
+    }
 }

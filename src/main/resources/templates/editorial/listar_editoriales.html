@@ -37,10 +37,10 @@
       <td th:text="${editorial.nombre}"></td>
       <td>
         <div class="btn-group">
-          <a th:href="@{'/editoriales/' + ${editorial.id}}" class="btn btn-outline-primary">Mostrar</a>
-          <a th:href="@{'/editoriales/' + ${editorial.id} + '/libros'}" class="btn btn-outline-info">Libros</a>
-          <a th:href="@{'/editoriales/' + ${editorial.id} + '/editar'}" class="btn btn-outline-warning">Editar</a>
-          <a th:href="@{'/editoriales/' + ${editorial.id} + '/eliminar'}" class="btn btn-outline-danger">Eliminar</a>
+          <a th:href="@{'/editoriales/' + ${editorial.id}}" class="btn btn-outline-primary  ms-3">Mostrar</a>
+          <a th:href="@{'/editoriales/' + ${editorial.id} + '/libros'}" class="btn btn-outline-info  ms-3">Libros</a>
+          <a th:href="@{'/editoriales/' + ${editorial.id} + '/editar'}" class="btn btn-outline-warning  ms-3"><i class="bi bi-pencil-square"></i></a>
+          <a th:href="@{'/editoriales/' + ${editorial.id} + '/eliminar'}" class="btn btn-outline-danger  ms-3"><i class="bi bi-trash-fill"></i></a>
         </div>
       </td>
     </tr>
