@@ -13,10 +13,12 @@
 <div class="container mt-5">
     <div class="row mb-3">
     <div class="col-md-12 d-flex justify-content-start">
-        <a th:href="@{/libros/export/pdf}" class="btn btn-outline-success" >
+        <a th:href="@{/libros/export/pdf}" class="btn btn-outline-success me-3" >
             <i class="bi bi-filetype-pdf"></i> Generar PDF
         </a>
-        <!--            <a th:href="@{/export/excel}" class="btn btn-success">Generar excel</a>-->
+        <a th:href="@{/libros/export/excel}" class="btn btn-outline-success">
+            <i class="bi bi-file-earmark-excel"></i> Generar excel</a>
+    </div>
     </div>
     </div>
 
