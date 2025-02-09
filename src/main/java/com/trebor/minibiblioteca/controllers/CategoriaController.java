@@ -93,4 +93,10 @@ public class CategoriaController {
         exporterPDF.export(response);
 
     }
+
+
+
+
+
+
 }
