@@ -10,9 +10,11 @@ import com.trebor.minibiblioteca.repositories.EditorialRepository;
 import com.trebor.minibiblioteca.services.EditorialService;
 import com.trebor.minibiblioteca.services.LibroService;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -42,7 +44,11 @@ public class EditorialController {
     }
 
     @PostMapping("/guardar")
-    public String guardarEditorial(@ModelAttribute Editorial editorial) {
+    public String guardarEditorial(@Valid @ModelAttribute Editorial editorial, BindingResult result, Model model) {
+        if (result.hasErrors()){
+            return "editorial/formulario_editorial";
+        }
+
         Editorial editorialGuardada = editorialService.guardarEditorial(editorial);
         return "redirect:/editoriales/listar";
     }

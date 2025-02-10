@@ -10,18 +10,17 @@
 
 <div class="container mt-4">
     <h2>Formulario de Categoria</h2>
-    <form th:action="@{/categorias/guardar}" method="post">
-        <input type="hidden" id="id" name="id" th:value="${categoria.id}">
+    <form th:action="@{/categorias/guardar}" th:object="${categoria}" method="post">
+        <input type="hidden" th:field="*{id}">
 
         <div class="form-group">
             <label for="nombre">Nombre : </label>
-            <input th:field="${categoria.nombre}" type="text" class="form-control" id="nombre" name="nombre" required>
+            <input th:field="*{nombre}" type="text" class="form-control" id="nombre">
+            <span style="color: red" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></span>
         </div>
 
-        <button type="submit" class="btn btn-outline-primary mt-3 ">Guardar</button>
-
+        <button type="submit" class="btn btn-outline-primary mt-3">Guardar</button>
     </form>
-
 </div>
 
 

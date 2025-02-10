@@ -11,11 +11,13 @@
 
 <div class="container mt-5">
     <h2>Formulario de Libro</h2>
-    <form action="/libros/guardar" method="post" >
-        <input type="hidden" name="id" th:value="${libro.id}">
+    <form action="/libros/guardar" method="post" th:object="${libro}">
+        <input type="hidden" th:field="*{id}">
+
         <div class="form-group">
-            <label for="titulo">Titulo</label>
-            <input th:value="${libro.titulo}" type="text" class="form-control" id="titulo" name="titulo" placeholder="Titulo de libro" required>
+            <label for="titulo">Título</label>
+            <input th:field="*{titulo}" type="text" class="form-control" id="titulo" name="titulo" placeholder="Título del libro" >
+            <div th:if="${#fields.hasErrors('titulo')}" th:errors="*{titulo}" class="text-danger"></div>
         </div>
 
 

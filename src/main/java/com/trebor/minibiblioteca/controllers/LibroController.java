@@ -13,9 +13,11 @@ import com.trebor.minibiblioteca.services.CategoriaService;
 import com.trebor.minibiblioteca.services.EditorialService;
 import com.trebor.minibiblioteca.services.LibroService;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -64,9 +66,17 @@ public class LibroController {
     }
 
     @PostMapping("/guardar")
-    public String guardarLibro(@ModelAttribute Libro libro, @RequestParam("editorialId")Long editorialId,
+    public String guardarLibro(@Valid @ModelAttribute Libro libro, BindingResult result, @RequestParam("editorialId")Long editorialId,
                                @RequestParam("categoriaId") Long categoriaId,
-                               @RequestParam("autoresIds") List<Long> autoresIds){
+                               @RequestParam("autoresIds") List<Long> autoresIds,Model model){
+
+        if (result.hasErrors()){
+            model.addAttribute("editoriales", editorialService.listarTodasLasEditoriales());
+            model.addAttribute("categorias", categoriaService.listarTodasLasCategorias());
+            model.addAttribute("autores", autorService.listarTodosLosAutores());
+            return "libro/formulario_libro";
+        }
+
         //Obtener y asignar la editorial y la categoria al libro
         Optional<Editorial> editorial=editorialService.buscarPorId(editorialId);
         editorial.ifPresent(libro::setEditorial);

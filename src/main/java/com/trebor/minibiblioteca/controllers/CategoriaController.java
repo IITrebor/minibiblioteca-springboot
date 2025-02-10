@@ -11,9 +11,11 @@ import com.trebor.minibiblioteca.repositories.CategoriaRepository;
 import com.trebor.minibiblioteca.services.CategoriaService;
 import com.trebor.minibiblioteca.services.LibroService;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -52,10 +54,15 @@ public class CategoriaController {
     }
 
     @PostMapping("/guardar")
-    public String guardarCategoria(@ModelAttribute Categoria categoria) {
+    public String guardarCategoria(@Valid @ModelAttribute Categoria categoria, BindingResult result, Model model) {
+        if (result.hasErrors()){
+            return "categoria/formulario_categoria";
+        }
+
         Categoria categoriaGuardada = categoriaService.guardarCategoria(categoria);
         List<Libro> libros = libroService.buscarPorCategoria(categoriaGuardada);
         categoriaGuardada.setLibros(libros);
+
         categoriaService.guardarCategoria(categoria);
         return "redirect:/categorias/listar";
     }
